@@ -16,21 +16,32 @@ category.
 
 class Category:
 
-    def __init__(self, name, code, parent):
+    def __init__(self, name, code):
         self.name = name
         self.code = code
-        self.parent = parent
+        self.parent = None
         self.display_name = None
-        self.products = None
         self.no_of_products = 0
+        self.products = []
 
     def display_name(self):
-        while Category:
-            print(self.parent)
+        pass
 
+    def display(self):
+        print("Category:",self.name)
+        pass
+
+    @staticmethod
+    def sort():
+        for category in range(len(cat_list)):
+            for category1 in range(category + 1, len(cat_list)):
+                if cat_list[category].name > cat_list[category1].name:
+                    cat_list[category], cat_list[category1] = cat_list[category1], cat_list[category]
+        for category in cat_list:
+            category.details()
 
     def details(self):
-        print("Product name :", self.name,'|',"code :", self.code,'|',"No.of products :",self.no_of_products,'|',"Parent :",self.parent,'|',"Display name:",self.display_name,'|',"Products :",self.products)
+        print("Category name :", self.name,'|',"code :", self.code,'|',"No.of products :",self.no_of_products,'|',"Parent :",self.parent,'|',"Display name:",self.display_name,'|',"Products :",self.products)
 
 class Product(Category):
 
@@ -39,6 +50,7 @@ class Product(Category):
         self.code = code
         self.category = category
         category.no_of_products += 1
+        category.products += self.name
         self.price = price
 
     def details(self):
@@ -53,29 +65,22 @@ c4 = Category("Bike", 4001)
 c5 = Category("Cycle", 5001)
 
 # Create 3 product objects in each category.
-p1 = Product("Honda-city", 301, c3, 10000)
+p1 = Product("Honda_city", 301, c3, 10000)
 p2 = Product("Hero-honda", 401, c4, 50000)
 p3 = Product("Mahindra", 101, c1, 4500)
-p4 = Product("Egele", 201, c2,85000)
+p4 = Product("Egele", 201, c2, 85000)
 p5 = Product("Atlas", 501, c5, 1200)
 p6 = Product("Suzuki", 302, c3, 9874)
 p7 = Product("Activa", 402, c4, 1478)
-p8 = Product("Tata", 102, c1,456874)
+p8 = Product("Tata", 102, c1, 456874)
 p9 = Product("Patel", 202, c2, 56741)
 p10 = Product("Avon", 502, c5, 48)
 p11 = Product("Verna", 303, c3, 1464)
 p12 = Product("Plesure", 403, c4, 468932)
-p13 = Product("Ashok-layland", 103 ,c1, 1564)
+p13 = Product("Ashok-layland", 103, c1, 1564)
 p14 = Product("Pramukhraj", 203, c2, 156)
 p15 = Product("Firefox", 503, c5, 145)
 
-pro_list = [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15]
-
-c1.details()
-c2.details()
-c3.details()
-c4.details()
-c5.details()
 
 p1.details()
 p2.details()
@@ -92,3 +97,24 @@ p12.details()
 p13.details()
 p14.details()
 p15.details()
+
+
+print(".....List of product objects.....")
+c1.details()
+c2.details()
+c3.details()
+c4.details()
+c5.details()
+
+
+print(".....Display Category with its Code, Display Name and all product details.....")
+c1.display()
+c2.display()
+c3.display()
+c4.display()
+c5.display()
+
+
+print(".......Display product list by category ( group by category, order by category name).......")
+cat_list = [c1, c2, c3, c4, c5]
+Category.sort()
