@@ -21,13 +21,15 @@ class Category:
         self.name = name
         self.code = code
         self.parent = parent
-        self.display_name = None
+        self.display_name()
         self.no_of_products = 0
         self.products = []
 
     def display_name(self):
-        if cat_list:
-            print()
+            if self.parent == None:
+                return self.name
+            else:
+                return self.parent, ">", self.name
 
     def sort(self):
         for category in range(len(cat_list)):
@@ -38,7 +40,7 @@ class Category:
             print("Category name:", category.name, '\n', "Product details:", category.products)
 
     def details(self):
-        print("Category name :", self.name, '|', "code :", self.code, '|', "No.of products :", self.no_of_products, '|', "Display name:", self.display_name, '|', "Products :", self.products)
+        print("Category name :", self.name, '|', "code :", self.code, '|', "No.of products :", self.no_of_products, '|', "Display name:", self.display_name(), '|', "Products :", self.products)
 
 
 class Product(Category):
@@ -60,11 +62,12 @@ class Product(Category):
 
 # Create 5 category objects with parent and child relation.
 c1 = Category("Truck", 1001, None)
-c2 = Category("Bus", 2001, c1.parent)
-c3 = Category("Car", 3001, c2.parent)
-c4 = Category("Bike", 4001, c3.parent)
-c5 = Category("Cycle", 5001, c4.parent)
+c2 = Category("Bus", 2001, c1.name)
+c3 = Category("Car", 3001, c2.name)
+c4 = Category("Bike", 4001, c3.name)
+c5 = Category("Cycle", 5001, c4.name)
 
+cat_list = [c1, c2, c3, c4, c5]
 
 # Create 3 product objects in each category.
 p1 = Product("Honda_city", 301, c3, 10000)
@@ -100,6 +103,7 @@ p13.details()
 p14.details()
 p15.details()
 
+
 print()
 print(".....List of product objects.....")
 print(".....Display Category with its Code, Display Name and all product details.....")
@@ -111,5 +115,4 @@ c5.details()
 
 print()
 print(".......Display product list by category ( group by category, order by category name).......")
-cat_list = [c1, c2, c3, c4, c5]
 Category.sort(cat_list)
