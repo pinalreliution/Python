@@ -21,15 +21,16 @@ class Category:
         self.name = name
         self.code = code
         self.parent = parent
-        self.display_name()
+        self.display_name = self.display_name()
         self.no_of_products = 0
         self.products = []
 
     def display_name(self):
-            if self.parent == None:
-                return self.name
-            else:
-                return self.parent, ">", self.name
+        if self.parent ==  None:
+            return self.name
+        else:
+           # Category.display_name(self)
+            return self.parent + ">" + self.name
 
     def sort(self):
         for category in range(len(cat_list)):
@@ -37,11 +38,16 @@ class Category:
                 if cat_list[category].name > cat_list[category1].name:
                     cat_list[category], cat_list[category1] = cat_list[category1], cat_list[category]
         for category in cat_list:
-            print("Category name:", category.name, '\n', "Product details:", category.products)
+            print("Category name:", category.name)
+            for product in category.products:
+                print("Product details:", product)
+            print()
 
     def details(self):
-        print("Category name :", self.name, '|', "code :", self.code, '|', "No.of products :", self.no_of_products, '|', "Display name:", self.display_name(), '|', "Products :", self.products)
-
+        print("Category name :", self.name, '\n', "code :", self.code, '\n', "No.of products :", self.no_of_products, '\n', "Display name:", self.display_name)
+        for product in self.products:
+            print("Products : ", product)
+        print()
 
 class Product(Category):
 
@@ -54,10 +60,10 @@ class Product(Category):
         self.price = price
 
     def __repr__(self):
-        return repr("[" + self.category.name + " " + ":" + " " + self.name + " " + '|' + " " + str(self.code)  + " " + '|' + " " + self.category.name  + " " + '|' + " "+  str(self.price) + " " + "]")
+        return (self.category.name + " " + ":" + " " + self.name + " " + '|' + " " + str(self.code)  + " " + '|' + " " + self.category.name  + " " + '|' + " "+  str(self.price))
 
     def details(self):
-        return  print("Product name :", self.name, '|', "Code :", self.code, '|', "Category :", self.category.name, '|', "Price :", self.price)
+        return print("Product name :", self.name, '|', "Code :", self.code, '|', "Category :", self.category.name, '|', "Price :", self.price)
 
 
 # Create 5 category objects with parent and child relation.
