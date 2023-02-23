@@ -17,22 +17,22 @@ category.
 
 class Category:
 
-    def __init__(self, name, code, parent):
+    def __init__(self, name, code, parent=None):
         self.name = name
         self.code = code
         self.parent = parent
-        self.display_name = self.display_name()
+        self.display_name = self.parent_display_name()
         self.no_of_products = 0
         self.products = []
 
-    def display_name(self):
-        if self.parent ==  None:
+    def parent_display_name(self):
+        if self.parent is None:
             return self.name
         else:
-           # Category.display_name(self)
-            return self.parent + ">" + self.name
+            return str(self.parent.parent_display_name()) + " " + ">" + " " + str(self.name)
+                        # Recursion logic
 
-    def sort(self):
+    def order_category(self):
         for category in range(len(cat_list)):
             for category1 in range(category + 1, len(cat_list)):
                 if cat_list[category].name > cat_list[category1].name:
@@ -44,10 +44,12 @@ class Category:
             print()
 
     def details(self):
-        print("Category name :", self.name, '\n', "code :", self.code, '\n', "No.of products :", self.no_of_products, '\n', "Display name:", self.display_name)
+        print("Category name :", self.name, '\n', "code :", self.code, '\n', "No.of products :", self.no_of_products,
+              '\n', "Display name:", self.display_name)
         for product in self.products:
             print("Products : ", product)
         print()
+
 
 class Product(Category):
 
@@ -55,23 +57,26 @@ class Product(Category):
         self.name = name
         self.code = code
         self.category = category
-        category.no_of_products += 1            #logic
-        category.products.append(self)          #logic
+        category.no_of_products += 1  # logic
+        category.products.append(self)  # logic
         self.price = price
 
-    def __repr__(self):
-        return (self.category.name + " " + ":" + " " + self.name + " " + '|' + " " + str(self.code)  + " " + '|' + " " + self.category.name  + " " + '|' + " "+  str(self.price))
+    def __repr__(self):         #Object attribute show krava
+        return self.category.name + " " + ":" + " " + self.name + " " + '|' + " " + str(
+            self.code) + " " + '|' + " " + self.category.name + " " + '|' + " " + str(self.price)
 
     def details(self):
-        return print("Product name :", self.name, '|', "Code :", self.code, '|', "Category :", self.category.name, '|', "Price :", self.price)
+        return print("Product name :", self.name, '|', "Code :", self.code, '|', "Category :", self.category.name, '|',
+                     "Price :", self.price)
+
 
 
 # Create 5 category objects with parent and child relation.
-c1 = Category("Truck", 1001, None)
-c2 = Category("Bus", 2001, c1.name)
-c3 = Category("Car", 3001, c2.name)
-c4 = Category("Bike", 4001, c3.name)
-c5 = Category("Cycle", 5001, c4.name)
+c1 = Category("Truck", 1001)
+c2 = Category("Bus", 2001, c1)
+c3 = Category("Car", 3001, c2)
+c4 = Category("Bike", 4001, c3)
+c5 = Category("Cycle", 5001, c4)
 
 cat_list = [c1, c2, c3, c4, c5]
 
@@ -92,7 +97,6 @@ p13 = Product("Ashok-layland", 103, c1, 1564)
 p14 = Product("Pramukhraj", 203, c2, 156)
 p15 = Product("Firefox", 503, c5, 145)
 
-
 p1.details()
 p2.details()
 p3.details()
@@ -109,7 +113,6 @@ p13.details()
 p14.details()
 p15.details()
 
-
 print()
 print(".....List of product objects.....")
 print(".....Display Category with its Code, Display Name and all product details.....")
@@ -121,4 +124,4 @@ c5.details()
 
 print()
 print(".......Display product list by category ( group by category, order by category name).......")
-Category.sort(cat_list)
+Category.order_category(cat_list)
