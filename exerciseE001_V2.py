@@ -70,7 +70,6 @@ class Product(Category):
                      "Price :", self.price)
 
 
-
 # Create 5 category objects with parent and child relation.
 c1 = Category("Truck", 1001)
 c2 = Category("Bus", 2001, c1)
