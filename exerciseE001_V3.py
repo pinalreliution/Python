@@ -11,7 +11,7 @@
     Move those 5 products from one location to another location using movement.
         Manage exceptions if product stock goes in -ve.
     Display movements of each product using the “movement_by_product” method.       #done
-    Display product details with its stock at various locations using “stock_at_locations”.
+    Display product details with its stock at various locations using “stock_at_locations”.     #done
     Display product list by location ( group by location).      #done
 '''
 
@@ -22,6 +22,7 @@ class Location:
         self.name = name
         self.code = code
 
+    # Display product list by location ( group by location)
     @staticmethod
     def sort(l_list):
         for loc in range(len(l_list)):
@@ -32,7 +33,7 @@ class Location:
             print("Location name:", loc.name)
             for product1 in mov_list:
                 if loc == product1.from_location:
-                    print("Product details :", "Product name :", '|', product1.product.name, '|', "Code :", product1.product.code, '|', "Price :", product1.product.price, '|', "Stock of products :", product1.product.stock_at_locations)
+                    print("Product details :", "Name :", product1.product.name, '|', "Code :", product1.product.code, '|', "Price :", product1.product.price, '|', "Stock of products :", product1.product.stock_at_locations)
             print()
 
     def show_location(self):
@@ -46,8 +47,11 @@ class Movement:
         self.to_location = to_location
         self.product = product
         self.quantity = quantity
+        # Display product details with its stock at various locations using “stock_at_locations”
         product.stock_at_locations.update({str(self.from_location.name): str(self.quantity)})
 
+
+    # Display movements of each product using the “movement_by_product” method
     @staticmethod
     def movements_by_product(product):
         for pro in mov_list:
@@ -55,20 +59,20 @@ class Movement:
                 pro.show_movement()
 
     def show_movement(self):
-        print("From location : ", self.from_location.name, '|', "To location :", self.to_location.name, '|',
+        print("From location : ", self.from_location.name, " ", "To ", self.to_location.name, '|',
               "Product :", self.product.name, '|', "Quantity :", str(self.quantity))
 
 
-class Product:
+class Product(Movement):
 
-    def __init__(self, name, code, price):
+    def __init__(self, name, code, price, stock_at_locations):
         self.name = name
         self.code = code
         self.price = price
         self.stock_at_locations = {}
 
     def stock(self):
-        pass
+        self.stock_at_locations.update({self.to_location: self.quantity})
 
     def show_product(self):
         return print("Product name :", self.name, '|', "Code :", str(self.code), '|',
@@ -82,11 +86,11 @@ ahmadabad = Location("Ahmadabad", 3001)
 baroda = Location("Baroda", 4001)
 
 # Create product class object
-airconditioner = Product("Airconditioner", 101, 450000)
-cloths = Product("Cloths", 201, 3600)
-chair = Product("Chair", 301, 890000)
-book = Product("Book", 401, 455874)
-laptop = Product("Laptop", 501, 45789)
+airconditioner = Product("Airconditioner", 101, 450000, {rajkot.name: 100})
+cloths = Product("Cloths", 201, 3600, {jamnagar.name: 50})
+chair = Product("Chair", 301, 890000, {ahmadabad.name: 30})
+book = Product("Book", 401, 455874, {baroda.name: 50})
+laptop = Product("Laptop", 501, 45789, {rajkot.name: 90})
 
 
 # Create movement class object
@@ -96,13 +100,6 @@ m3 = Movement(ahmadabad, baroda, chair, 23)
 m4 = Movement(jamnagar, rajkot, book, 41)
 m5 = Movement(baroda, ahmadabad, laptop, 85)
 
-print(".....Display product details with its stock at various locations using stock_at_locations.....")
-airconditioner.show_product()
-cloths.show_product()
-chair.show_product()
-book.show_product()
-laptop.show_product()
-
 print()
 print(".....Display movements of each product using the movement_by_product method.....")
 mov_list = [m1, m2, m3, m4, m5]
@@ -111,6 +108,14 @@ Movement.movements_by_product(cloths)
 Movement.movements_by_product(chair)
 Movement.movements_by_product(book)
 Movement.movements_by_product(laptop)
+
+print()
+print(".....Display product details with its stock at various locations using stock_at_locations.....")
+airconditioner.show_product()
+cloths.show_product()
+chair.show_product()
+book.show_product()
+laptop.show_product()
 
 print()
 print("......Display product list by location ( group by location)......")
