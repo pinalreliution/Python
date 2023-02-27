@@ -22,6 +22,9 @@ class Location:
         self.name = name
         self.code = code
 
+    def __repr__(self):
+        return self.name
+
     # Display product list by location ( group by location)
     @staticmethod
     def sort(l_list):
@@ -33,7 +36,9 @@ class Location:
             print("Location name:", loc.name)
             for product1 in mov_list:
                 if loc == product1.from_location:
-                    print("Product details :", "Name :", product1.product.name, '|', "Code :", product1.product.code, '|', "Price :", product1.product.price, '|', "Stock of products :", product1.product.stock_at_locations)
+                    print("Product details :", "Name :", product1.product.name, '|', "Code :", product1.product.code,
+                          '|', "Price :", product1.product.price, '|', "Stock of products :",
+                          product1.product.stock_at_locations)
             print()
 
     def show_location(self):
@@ -47,9 +52,16 @@ class Movement:
         self.to_location = to_location
         self.product = product
         self.quantity = quantity
-        # Display product details with its stock at various locations using “stock_at_locations”
-        product.stock_at_locations.update({str(self.from_location.name): str(self.quantity)})
+        product.stock_at_locations.update({str(self.to_location.name): str(self.quantity)})
+        # product.stock_at_locations.update({str(self.from_location): str(self.stock())})
 
+    def stock(self):
+        for i, j in self.product.stock_at_locations.items():
+            try:
+                if self.quantity <= j:
+                    return self.product.stock_at_locations.update({str(self.from_location): str(j - self.quantity)})
+            except:
+                return "Out of stock"
 
     # Display movements of each product using the “movement_by_product” method
     @staticmethod
@@ -63,16 +75,13 @@ class Movement:
               "Product :", self.product.name, '|', "Quantity :", str(self.quantity))
 
 
-class Product(Movement):
+class Product:
 
     def __init__(self, name, code, price, stock_at_locations):
         self.name = name
         self.code = code
         self.price = price
-        self.stock_at_locations = {}
-
-    def stock(self):
-        self.stock_at_locations.update({self.to_location: self.quantity})
+        self.stock_at_locations = stock_at_locations
 
     def show_product(self):
         return print("Product name :", self.name, '|', "Code :", str(self.code), '|',
@@ -86,19 +95,18 @@ ahmadabad = Location("Ahmadabad", 3001)
 baroda = Location("Baroda", 4001)
 
 # Create product class object
-airconditioner = Product("Airconditioner", 101, 450000, {rajkot.name: 100})
-cloths = Product("Cloths", 201, 3600, {jamnagar.name: 50})
-chair = Product("Chair", 301, 890000, {ahmadabad.name: 30})
-book = Product("Book", 401, 455874, {baroda.name: 50})
-laptop = Product("Laptop", 501, 45789, {rajkot.name: 90})
-
+airconditioner = Product("Airconditioner", 101, 450000, {rajkot: 100})
+cloths = Product("Cloths", 201, 3600, {jamnagar: 50})
+chair = Product("Chair", 301, 890000, {ahmadabad: 30})
+book = Product("Book", 401, 455874, {baroda: 50})
+laptop = Product("Laptop", 501, 45789, {rajkot: 90})
 
 # Create movement class object
 m1 = Movement(rajkot, jamnagar, airconditioner, 78)
-m2 = Movement(rajkot, ahmadabad, cloths, 45)
+m2 = Movement(jamnagar, ahmadabad, cloths, 55)
 m3 = Movement(ahmadabad, baroda, chair, 23)
-m4 = Movement(jamnagar, rajkot, book, 41)
-m5 = Movement(baroda, ahmadabad, laptop, 85)
+m4 = Movement(baroda, rajkot, book, 41)
+m5 = Movement(rajkot, ahmadabad, laptop, 85)
 
 print()
 print(".....Display movements of each product using the movement_by_product method.....")
@@ -121,3 +129,5 @@ print()
 print("......Display product list by location ( group by location)......")
 l_list = [rajkot, jamnagar, ahmadabad, baroda]
 Location.sort(l_list)
+
+print()
