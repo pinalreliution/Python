@@ -52,16 +52,19 @@ class Movement:
         self.to_location = to_location
         self.product = product
         self.quantity = quantity
+        self.change_value()
         product.stock_at_locations.update({str(self.to_location.name): str(self.quantity)})
         # product.stock_at_locations.update({str(self.from_location): str(self.stock())})
 
-    def stock(self):
+    def change_value(self):
         for i, j in self.product.stock_at_locations.items():
-            try:
-                if self.quantity <= j:
-                    return self.product.stock_at_locations.update({str(self.from_location): str(j - self.quantity)})
-            except:
-                return "Out of stock"
+            self.product.stock_at_locations[i] = j - self.quantity
+            # raise Exception("Out of stock")
+            # if self.quantity <= j:
+            #     self.product.stock_at_locations[i] = j - self.quantity
+            #     print(self.product.stock_at_locations[i])
+            # else:
+            #     raise Exception("Out of stock")
 
     # Display movements of each product using the “movement_by_product” method
     @staticmethod
@@ -129,5 +132,3 @@ print()
 print("......Display product list by location ( group by location)......")
 l_list = [rajkot, jamnagar, ahmadabad, baroda]
 Location.sort(l_list)
-
-print()
